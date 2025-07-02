@@ -1,0 +1,93 @@
+#-------Simplex 投影选 E-----
+library(rEDM)
+library(ggplot2)
+#选择所需要的列
+df <- df_full %>% select(starts_with(c("time","value_interp")))
+colnames(df) <- c("time", "value")  # rEDM expects column named "value"
+# 提取 "value" 列作为输入
+df_edm <- data.frame(value = df$value)
+class(df_edm)
+str(df_edm)
+head(df_edm)
+#Simplex Projection to choose best E,LOOCV
+N <- nrow(df_edm)
+simplex_out <- simplex(
+  time_series  = df_edm$value,
+  lib = c(1, N), # 训练集索引
+  pred = c(1, N),# 预测集索引
+  E = 1:10,# 测试不同的嵌入维度
+  tau = 1# 时间延迟
+  ) 
+
+E_best <- simplex_out$E[which.max(simplex_out$rho)]
+cat("Best E =", E_best, "\n")
+
+# 定义 theta 扫描范围（非线性参数）
+theta_vals <- seq(0, 10, by = 0.5)
+
+# 执行 S-map 非线性分析
+smap_out <- s_map(
+  time_series = df_edm$value,  # 数值向量
+  lib         = c(1, N),
+  pred        = c(1, N),
+  E           = E_best,
+  tau         = 1,
+  theta       = theta_vals
+)
+
+# 查看结果
+print(smap_out)
+
+# 找出最佳 theta（最大 rho）
+theta_best <- smap_out$theta[which.max(smap_out$rho)]
+cat("最佳非线性参数 θ* =", theta_best, "\n")
+
+# 绘图
+# 将 Simplex LOOCV 的结果转换为数据框以便 ggplot 使用
+simplex_data <- data.frame(
+  E = simplex_out$E,
+  rho = simplex_out$rho
+)
+
+# 使用 ggplot 绘制 Simplex LOOCV 图
+ggplot(simplex_data, aes(x = E, y = rho)) +
+  geom_point(size = 3, color = "#c4db86ff") +  # 点的样式
+  geom_line(color =  "steelblue", size = 1,alpha = 0.8) +                # 线的样式
+  labs(
+    title = paste("Simplex LOOCV: E_best =",E_best,""),
+    x = "Embedding dimension E",
+    y = "Forecast skill (rho)"
+  ) +
+  theme_minimal() +                                   # 使用简洁的主题
+  theme(
+    plot.title = element_text(hjust = 0.5),          # 标题居中
+    axis.title.x = element_text(size = 12),          # x 轴标题大小
+    axis.title.y = element_text(size = 12),          # y 轴标题大小
+    axis.text = element_text(size = 10),             # 坐标轴文字大小
+    panel.grid.major = element_line(linetype = "dashed", color = "gray", size = 0.5) # 网格线样式
+  )
+
+# 将 S-map 的结果转换为数据框以便 ggplot 使用
+smap_data <- data.frame(
+  theta = smap_out$theta,
+  rho = smap_out$rho
+)
+
+# 使用 ggplot 绘制 S-map 图
+ggplot(smap_data, aes(x = theta, y = rho)) +
+  geom_point(size = 3, color = "#c4db86ff", alpha = 0.8) +  # 点的样式
+  geom_line(color = "steelblue", size = 1) +               # 线的样式
+  geom_vline(aes(xintercept = theta_best), linetype = "dashed", color ="steelblue", size = 1) +  # 添加垂直虚线
+  labs(
+    title = paste("S-map (E =", E_best, ",θ =", theta_best, "): ρ vs θ"),
+    x = "Theta (Nonlinearity Parameter)",
+    y = "Forecast skill (rho)"
+  ) +
+  theme_minimal() +                                      # 使用简洁的主题
+  theme(
+    plot.title = element_text(hjust = 0.5),            # 标题居中
+    axis.title.x = element_text(size = 12),            # x 轴标题大小
+    axis.title.y = element_text(size = 12),            # y 轴标题大小
+    axis.text = element_text(size = 10),               # 坐标轴文字大小
+    panel.grid.major = element_line(linetype = "dashed", color = "gray", size = 0.5) # 网格线样式
+  )
