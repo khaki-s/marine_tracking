@@ -132,7 +132,7 @@ The project uses pre-trained YOLOv8 models for object detection:
 - `yolov8x.pt`: Large model providing higher detection accuracy
 
 ## Case Studies
-
+Video data for this study were sourced from the EMSO-Azores deep-sea observation network, specifically from the Lucky Strike hydrothermal vent field (37°N, 32°W) located on the Mid-Atlantic Ridge. you can see it on: https://www.emso-fr.org/Azores
 The project contains data analysis for multiple years:
 
 - 2016-2017
