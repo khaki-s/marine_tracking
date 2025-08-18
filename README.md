@@ -148,15 +148,6 @@ Each period's dataset includes distance results for crabs, which can be used to 
 The model weights for all three species and related research papers are publicly available on Figshare:
 [https://doi.org/10.6084/m9.figshare.29931491.v1](https://doi.org/10.6084/m9.figshare.29931491.v1)
 
-## Contribution Guidelines
-
-Contributions to the project are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Create a Pull Request
 
 ## License
 
