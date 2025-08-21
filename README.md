@@ -158,6 +158,4 @@ MIT License
 
 For questions or collaborations, please contact: chujingyi@stu.ouc.edu.cn
 
-## Acknowledgements
 
-Thanks to all researchers and developers who have contributed to this project.
