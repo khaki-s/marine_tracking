@@ -4,18 +4,39 @@ Marine Tracking is a comprehensive toolkit for tracking and analyzing the moveme
 
 ## Project Structure
 
-The project is divided into three main modules, each focusing on a different marine organism:
-
-```
+```text
 marine_tracking/
-├── crab/               # Crab tracking and analysis
-├── mussel/             # Mussel tracking and analysis
-├── shrimp/             # Shrimp tracking and analysis
-├── utils/              # Common utility functions
-├── capture.py          # Video frame capture tool
-├── requirements.txt    # Project dependencies
-├── setup.py            # Installation configuration
-└── README.md           # Project documentation
+|-- track/
+|   |-- crab/
+|   |   |-- code/
+|   |   `-- distance_results/
+|   |-- mussel/
+|   |   |-- code/
+|   |   |-- mussel/
+|   |   |-- out/
+|   |   `-- results/
+|   `-- shrimp/
+|       |-- code/
+|       |-- distance/
+|       |-- figure/
+|       |-- R/
+|       `-- tide/
+|-- eval/
+|   |-- crab/
+|   |   |-- code/
+|   |   `-- result/
+|   |-- mussel/
+|   |   |-- evaluate.py
+|   |   |-- merge.py
+|   |   `-- out/
+|   `-- shrimp/
+|       |-- code/
+|       `-- results/
+|-- utils/
+|-- ultralytics/
+|-- requirements.txt
+|-- setup.py
+`-- README.md
 ```
 
 ## Features
@@ -82,7 +103,7 @@ install.packages(c("rEDM", "ggplot2", "dplyr"))
 ### Crab Tracking
 
 ```bash
-python crab/code/yolo_deepsort_dir_v4.py
+python track/crab/code/yolo_deepsort_dir_v4.py
 ```
 
 This script processes video files in the specified directory, tracks crab movement, and generates output videos with trajectory and velocity information.
@@ -90,7 +111,7 @@ This script processes video files in the specified directory, tracks crab moveme
 ### Mussel Monitoring
 
 ```bash
-python mussel/code/track.py
+python track/mussel/code/track.py
 ```
 
 This script analyzes mussel position changes between consecutive image frames, marking moving and stationary individuals.
@@ -98,7 +119,7 @@ This script analyzes mussel position changes between consecutive image frames, m
 ### Shrimp Trajectory Plotting
 
 ```bash
-python shrimp/code/paint_trajectory_dir.py
+python track/shrimp/code/paint_trajectory_dir.py
 ```
 
 This script processes shrimp videos, plots their movement trajectories, and saves the results in PDF format.
@@ -109,7 +130,33 @@ R scripts located in the `shrimp/R/` directory are used for advanced time series
 
 - `simplex+s-map.R`: Uses Simplex projection and S-map for nonlinear time series analysis
 - `ECCM.R`: Performs convergent cross mapping analysis
-- `Interpolation method+sliding window.R`: Uses interpolation methods and sliding windows for data processing
+
+## Evaluation
+
+### Crab Tracker Comparison
+
+Scripts in `eval/crab/code/` generate MOT/TrackEval-style result files for different trackers:
+
+- `track_deepsort.py`
+- `track_bytetrack.py`
+- `track_botsort.py`
+
+Ground-truth reference file:
+
+- `eval/crab/result/gt.txt`
+
+### Mussel Statistical Evaluation
+
+```bash
+python eval/mussel/merge.py
+python eval/mussel/evaluate.py
+```
+
+`evaluate.py` reports metrics such as Spearman correlation, RMSE, MAE, and limits of agreement.
+
+### Shrimp Evaluation Scripts
+
+Evaluation and tracker-output scripts are located in `eval/shrimp/code/`, with outputs under `eval/shrimp/results/`.
 
 ## Data Formats
 
@@ -148,11 +195,7 @@ Each period's dataset includes distance results for crabs, which can be used to 
 ## Model Weights and Research Papers
 
 The model weights for all three species and related research papers are publicly available on Figshare:
-[https://doi.org/10.6084/m9.figshare.29931491.v3](https://doi.org/10.6084/m9.figshare.29931491.v3)
-
-## License
-
-MIT License
+[https://doi.org/10.6084/m9.figshare.29931491.v5](https://doi.org/10.6084/m9.figshare.29931491.v5)
 
 ## Contact
 
