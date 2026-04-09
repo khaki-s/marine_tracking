@@ -52,7 +52,7 @@ marine_tracking/
 - Python 3.9.20
 - R 4.4.3
 - ultralytics-8.3.27 you can find it on: https://github.com/ultralytics/ultralytics
-- CUDA-enabled GPU (recommended for YOLOv8 models)
+- CUDA-enabled GPU
 
 ### Installation Steps
 
@@ -148,7 +148,7 @@ Each period's dataset includes distance results for crabs, which can be used to 
 ## Model Weights and Research Papers
 
 The model weights for all three species and related research papers are publicly available on Figshare:
-[https://doi.org/10.6084/m9.figshare.29931491.v1](https://doi.org/10.6084/m9.figshare.29931491.v1)
+[https://doi.org/10.6084/m9.figshare.29931491.v3](https://doi.org/10.6084/m9.figshare.29931491.v3)
 
 ## License
 
