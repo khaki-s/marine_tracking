@@ -1,7 +1,5 @@
-import cv2
 import numpy as np
 from ultralytics import YOLO
-import os
 
 # ------------------ TrackEval Output Settings ------------------
 TRACKEVAL_OUTPUT_DIR = './result19-4-12'  # 对应 template2.yaml 的 trackers_folder
